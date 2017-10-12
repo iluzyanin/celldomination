@@ -1,0 +1,67 @@
+@thickness: 6px;
+.container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.box {
+  &.isFirstPlayer {
+    background-color: blue;
+  }
+  &.isSecondPlayer {
+    background-color: yellow;
+  }
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.border {
+  &:hover {
+    background-color: green;
+    z-index: 1;
+    cursor: pointer;
+  }
+  
+  &.active {
+    background-color: black;
+    z-index: 1;
+    cursor: default;
+  }
+  
+  position: absolute;
+  background-color: lightgrey;
+}
+
+.top {
+  .border;
+  width: 100%;
+  height: @thickness;
+  top: -3px;
+}
+
+.right {
+  .border;
+  height: 100%;
+  width: @thickness;
+  right: -3px;
+}
+
+.bottom {
+  .border;
+  width: 100%;
+  height: @thickness;
+  bottom: -3px;
+}
+
+.left {
+  .border;
+  height: 100%;
+  width: @thickness;
+  left: -3px;
+}
