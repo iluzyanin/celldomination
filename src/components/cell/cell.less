@@ -5,12 +5,12 @@
 @teal: #39CCCC;
 @fuchsia: #F012BE;
 @orange: #FF851B;
-@gray: #BBBBBB;
+@light-cyan: #EEEFFF;
 @dark-gray: #666666;
 
 .box {
   &.isFirstPlayer {
-    background-color: @teal;
+    background-color: @green;
   }
   &.isSecondPlayer {
     background-color: @orange;
@@ -27,17 +27,17 @@
     top: -@thickness;
     left: -@thickness;
     right: -@thickness;
-    bottom: -5@thicknesspx;
+    bottom: -@thickness;
   }
 
   transition: background-color 0.05s;
   border-radius: 3px;
-  border: 1px solid @gray;
+  border: 1px solid @light-cyan;
   background-clip: padding-box;
 
   &:hover {
-    background-color: @green;
-    border-color: @green;
+    background-color: @teal;
+    border-color: @teal;
     z-index: 1;
     cursor: pointer;
   }
@@ -50,7 +50,7 @@
   }
   
   position: absolute;
-  background-color: @gray;
+  background-color: @light-cyan;
 }
 
 .top {
