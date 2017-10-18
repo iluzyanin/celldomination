@@ -26,7 +26,9 @@ class CellList extends React.Component {
                     Enable animation
                 </label>
                 <div className={classNames('container', { 'container--animated': this.state.isContainerAnimated })}>
-                    {this.state.rows.map(cells => <div className="row">{cells.map(cell => <Cell {...cell} />)}</div>)}
+                    {this.state.rows.map((cells, rowIndex) =>
+                        <div className="row" key={rowIndex}>{cells.map((cell, cellIndex) =>
+                            <Cell key={cellIndex} {...cell} />)}</div>)}
                 </div>
             </div >
         );
@@ -47,19 +49,19 @@ class CellList extends React.Component {
                         cells.push(new CellModel());
                         continue;
                     }
-                    if (j == halfSize - i - 2) {
+                    if (j === halfSize - i - 2) {
                         cells.push(new CellModel(0, 2, 2, 0));
                         continue;
                     }
-                    if (j == halfSize - i - 1) {
+                    if (j === halfSize - i - 1) {
                         cells.push(new CellModel(2, 1, 1, 2));
                         continue;
                     }
-                    if (j == halfSize + i) {
+                    if (j === halfSize + i) {
                         cells.push(new CellModel(2, 2, 1, 1));
                         continue;
                     }
-                    if (j == halfSize + i + 1) {
+                    if (j === halfSize + i + 1) {
                         cells.push(new CellModel(0, 0, 2, 2));
                         continue;
                     }
@@ -80,19 +82,19 @@ class CellList extends React.Component {
                         cells.push(new CellModel());
                         continue;
                     }
-                    if (j == i - halfSize - 1) {
+                    if (j === i - halfSize - 1) {
                         cells.push(new CellModel(2, 2, 0, 0));
                         continue;
                     }
-                    if (j == i - halfSize) {
+                    if (j === i - halfSize) {
                         cells.push(new CellModel(1, 1, 2, 2));
                         continue;
                     }
-                    if (j == 3 * halfSize - i - 1) {
+                    if (j === 3 * halfSize - i - 1) {
                         cells.push(new CellModel(1, 2, 2, 1));
                         continue;
                     }
-                    if (j == 3 * halfSize - i) {
+                    if (j === 3 * halfSize - i) {
                         cells.push(new CellModel(2, 0, 0, 2));
                         continue;
                     }

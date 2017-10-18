@@ -1,4 +1,5 @@
-@thickness: 4px;
+@thickness: 2px;
+@shift: (@thickness + 2) / 2;
 @red: #FF4136;
 @green: #2ECC40;
 @teal: #39CCCC;
@@ -20,9 +21,19 @@
 }
 
 .border {
+  &:before {
+    content: '';
+    position: absolute;
+    top: -@thickness;
+    left: -@thickness;
+    right: -@thickness;
+    bottom: -5@thicknesspx;
+  }
+
   transition: background-color 0.05s;
   border-radius: 3px;
   border: 1px solid @gray;
+  background-clip: padding-box;
 
   &:hover {
     background-color: @green;
@@ -46,26 +57,26 @@
   .border;
   width: 100%;
   height: @thickness;
-  top: -3px;
+  top: -@shift;
 }
 
 .right {
   .border;
   height: 100%;
   width: @thickness;
-  right: -3px;
+  right: -@shift;
 }
 
 .bottom {
   .border;
   width: 100%;
   height: @thickness;
-  bottom: -3px;
+  bottom: -@shift;
 }
 
 .left {
   .border;
   height: 100%;
   width: @thickness;
-  left: -3px;
+  left: -@shift;
 }
