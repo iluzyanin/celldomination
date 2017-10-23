@@ -12,6 +12,7 @@ class CellList extends React.Component {
             isContainerAnimated: false
         }
         this.toggleContainerAnimation = this.toggleContainerAnimation.bind(this);
+        this.activateBorder = this.activateBorder.bind(this);
     }
 
     componentDidMount() {
@@ -28,10 +29,110 @@ class CellList extends React.Component {
                 <div className={classNames('container', { 'container--animated': this.state.isContainerAnimated })}>
                     {this.state.rows.map((cells, rowIndex) =>
                         <div className="row" key={rowIndex}>{cells.map((cell, cellIndex) =>
-                            <Cell key={cellIndex} {...cell} />)}</div>)}
+                            <Cell key={cellIndex} onBorderClick={(borderIndex) => this.activateBorder(rowIndex, cellIndex, borderIndex)} {...cell} />)}</div>)}
                 </div>
             </div >
         );
+    }
+
+    activateBorder(row, column, border) {
+        const currentCell = this.state.rows[row][column];
+        let nextCell;
+        let keepTurn = false;
+        if (border === 0) {
+            nextCell = this.state.rows[row - 1][column];
+            if (currentCell.top === 2) {
+                return;
+            }
+            currentCell.top = 2;
+            nextCell.bottom = 2;
+            if (currentCell.isActive) {
+                //currentCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+            if (nextCell.isActive) {
+                //nextCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+        }
+        if (border === 1) {
+            nextCell = this.state.rows[row][column + 1];
+            if (currentCell.right === 2) {
+                return;
+            }
+            currentCell.right = 2;
+            nextCell.left = 2;
+            if (currentCell.isActive) {
+                //currentCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+            if (nextCell.isActive) {
+                //nextCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+        }
+        if (border === 2) {
+            nextCell = this.state.rows[row + 1][column];
+            if (currentCell.bottom === 2) {
+                return;
+            }
+            currentCell.bottom = 2;
+            nextCell.top = 2;
+            if (currentCell.isActive) {
+                //currentCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+            if (nextCell.isActive) {
+                //nextCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+        }
+        if (border === 3) {
+            nextCell = this.state.rows[row][column - 1];
+            if (currentCell.left === 2) {
+                return;
+            }
+            currentCell.left = 2;
+            nextCell.right = 2;
+            if (currentCell.isActive) {
+                //currentCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+            if (nextCell.isActive) {
+                //nextCell.player = $scope.currentPlayer;
+                //$scope.score[$scope.currentPlayer] += 1;
+                keepTurn = true;
+            }
+        }
+
+        /*if (this.state.rows.some(function (row) {
+            return row.some(function (cell) {
+                return cell.top === 1 ||
+                    cell.right === 1 ||
+                    cell.bottom === 1 ||
+                    cell.left === 1;
+            });
+        })) {
+            if (!keepTurn) {
+                $scope.currentPlayer = $scope.currentPlayer === 0 ? 1 : 0;
+            }
+
+            if ($scope.currentPlayer === 1) {
+                $timeout(function () {
+                    computerMove();
+                }, 100);
+            }
+        } else {
+            $scope.isGameOver = true;
+        }*/
+        this.setState({ rows: this.state.rows });
     }
 
     toggleContainerAnimation() {
