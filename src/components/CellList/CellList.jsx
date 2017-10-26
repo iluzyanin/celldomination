@@ -1,5 +1,6 @@
 import './CellList.css';
 import React from 'react';
+import update from 'immutability-helper';
 import Cell from '../Cell/Cell';
 import CellModel from '../../models/CellModel';
 import classNames from 'classnames';
@@ -36,83 +37,87 @@ class CellList extends React.Component {
     }
 
     activateBorder(row, column, border) {
-        const currentCell = this.state.rows[row][column];
-        let nextCell;
-        let keepTurn = false;
-        if (border === 0) {
-            nextCell = this.state.rows[row - 1][column];
-            if (currentCell.top === 2) {
-                return;
+        this.setState(prevState => {
+            let rows = prevState.rows;
+            const currentCell = rows[row][column];
+            let nextCell;
+            let keepTurn = false;
+            if (border === 0) {
+                nextCell = rows[row - 1][column];
+                if (currentCell.top === 2) {
+                    return;
+                }
+                rows = update(rows, { [row]: { [column]: { top: { $set: 2 } } } });
+                rows = update(rows, { [row - 1]: { [column]: { bottom: { $set: 2 } } } });
+                if (currentCell.isActive) {
+                    //currentCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
+                if (nextCell.isActive) {
+                    //nextCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
             }
-            currentCell.top = 2;
-            nextCell.bottom = 2;
-            if (currentCell.isActive) {
-                //currentCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
+            if (border === 1) {
+                nextCell = rows[row][column + 1];
+                if (currentCell.right === 2) {
+                    return;
+                }
+                rows = update(rows, { [row]: { [column]: { right: { $set: 2 } } } });
+                rows = update(rows, { [row]: { [column + 1]: { left: { $set: 2 } } } });
+                if (currentCell.isActive) {
+                    //currentCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
+                if (nextCell.isActive) {
+                    //nextCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
             }
-            if (nextCell.isActive) {
-                //nextCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
+            if (border === 2) {
+                nextCell = rows[row + 1][column];
+                if (currentCell.bottom === 2) {
+                    return;
+                }
+                rows = update(rows, { [row]: { [column]: { bottom: { $set: 2 } } } });
+                rows = update(rows, { [row + 1]: { [column]: { top: { $set: 2 } } } });
+                if (currentCell.isActive) {
+                    //currentCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
+                if (nextCell.isActive) {
+                    //nextCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
             }
-        }
-        if (border === 1) {
-            nextCell = this.state.rows[row][column + 1];
-            if (currentCell.right === 2) {
-                return;
+            if (border === 3) {
+                nextCell = rows[row][column - 1];
+                if (currentCell.left === 2) {
+                    return;
+                }
+                rows = update(rows, { [row]: { [column]: { left: { $set: 2 } } } });
+                rows = update(rows, { [row]: { [column - 1]: { right: { $set: 2 } } } });
+                if (currentCell.isActive) {
+                    //currentCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
+                if (nextCell.isActive) {
+                    //nextCell.player = $scope.currentPlayer;
+                    //$scope.score[$scope.currentPlayer] += 1;
+                    keepTurn = true;
+                }
             }
-            currentCell.right = 2;
-            nextCell.left = 2;
-            if (currentCell.isActive) {
-                //currentCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-            if (nextCell.isActive) {
-                //nextCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-        }
-        if (border === 2) {
-            nextCell = this.state.rows[row + 1][column];
-            if (currentCell.bottom === 2) {
-                return;
-            }
-            currentCell.bottom = 2;
-            nextCell.top = 2;
-            if (currentCell.isActive) {
-                //currentCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-            if (nextCell.isActive) {
-                //nextCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-        }
-        if (border === 3) {
-            nextCell = this.state.rows[row][column - 1];
-            if (currentCell.left === 2) {
-                return;
-            }
-            currentCell.left = 2;
-            nextCell.right = 2;
-            if (currentCell.isActive) {
-                //currentCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-            if (nextCell.isActive) {
-                //nextCell.player = $scope.currentPlayer;
-                //$scope.score[$scope.currentPlayer] += 1;
-                keepTurn = true;
-            }
-        }
+            return { rows };
+        });
 
-        /*if (this.state.rows.some(function (row) {
+        /*if (rows.some(function (row) {
             return row.some(function (cell) {
                 return cell.top === 1 ||
                     cell.right === 1 ||
@@ -132,7 +137,6 @@ class CellList extends React.Component {
         } else {
             $scope.isGameOver = true;
         }*/
-        this.setState({ rows: this.state.rows });
     }
 
     toggleContainerAnimation() {
