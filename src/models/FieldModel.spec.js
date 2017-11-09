@@ -1,12 +1,11 @@
-import FieldModel from './FieldModel';
+import buildRows from './FieldModel';
 import CellModel from './CellModel';
 
 describe('FieldModel', () => {
     describe('When calling buildRows method with 2', () => {
         let rows;
         beforeEach(() => {
-            let fieldModel = new FieldModel();
-            rows = fieldModel.buildRows(2);
+            rows = buildRows(2);
         });
 
         test('Should create rows with 4 rows', () => {

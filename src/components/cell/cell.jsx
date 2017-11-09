@@ -1,6 +1,5 @@
 import './Cell.css';
 import React from 'react';
-import classNames from 'classnames';
 
 const Cell = (props) => {
     const borderClassName = (border) => {
@@ -12,8 +11,18 @@ const Cell = (props) => {
         return cssClass;
     };
 
+    const cellClassName = (props) => {
+        let { top, right, bottom, left, player } = props;
+        let cssClass = "box";
+        if (top === 2 && right === 2 && bottom === 2 && left === 2) {
+            cssClass += player === 0 ? ' isFirstPlayer' : ' isSecondPlayer';
+        }
+
+        return cssClass;
+    }
+
     return (
-        <div className={classNames('box', { 'isFirstPlayer': props.isActive })}>
+        <div className={cellClassName(props)}>
             {props.top > 0 &&
                 <div className={borderClassName('top')} onClick={() => props.onBorderClick(0)}></div>
             }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import CellList from './components/CellList/CellList';
+import Game from './components/Game/Game';
 
 class App extends Component {
   render() {
@@ -10,7 +10,7 @@ class App extends Component {
           <h2>Cell Domination</h2>
         </div>
         <div className="App-intro">
-          <CellList />
+          <Game />
         </div>
       </div>
     );
