@@ -1,6 +1,5 @@
 import './Field.css';
 import React from 'react';
-import update from 'immutability-helper';
 import Cell from '../Cell/Cell';
 import buildRows from '../../models/FieldModel';
 import classNames from 'classnames';
@@ -20,10 +19,6 @@ class Field extends React.PureComponent {
     this.reset = this.reset.bind(this);
     this.fieldSizeChange = this.fieldSizeChange.bind(this);
   }
-
-  /*componentDidMount() {
-    this.setState({ rows: buildRows(5) });
-  }*/
 
   render() {
     return (
@@ -47,23 +42,25 @@ class Field extends React.PureComponent {
 
   activateBorder(row, column, border) {
     this.setState(prevState => {
-      let rows = prevState.rows;
+      let rows = prevState.rows.slice().map(r => r.slice());
       const currentCell = rows[row][column];
+      let nextCell;
       let keepTurn = false;
       let scoreIncrement = 0;
       if (border === 0) {
         if (currentCell.top === 2) {
           return;
         }
-        rows = update(rows, { [row]: { [column]: { top: { $set: 2 } } } });
-        rows = update(rows, { [row - 1]: { [column]: { bottom: { $set: 2 } } } });
-        if (rows[row][column].isActive) {
-          rows = update(rows, { [row]: { [column]: { player: { $set: prevState.player } } } });
+        nextCell = rows[row - 1][column];
+        currentCell.top = 2;
+        nextCell.bottom = 2;
+        if (currentCell.isActive) {
+          currentCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
-        if (rows[row - 1][column].isActive) {
-          rows = update(rows, { [row - 1]: { [column]: { player: { $set: prevState.player } } } });
+        if (nextCell.isActive) {
+          nextCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
@@ -72,15 +69,17 @@ class Field extends React.PureComponent {
         if (currentCell.right === 2) {
           return;
         }
-        rows = update(rows, { [row]: { [column]: { right: { $set: 2 } } } });
-        rows = update(rows, { [row]: { [column + 1]: { left: { $set: 2 } } } });
-        if (rows[row][column].isActive) {
-          rows = update(rows, { [row]: { [column]: { player: { $set: prevState.player } } } });
+        nextCell = rows[row][column + 1];
+
+        currentCell.right = 2;
+        nextCell.left = 2;
+        if (currentCell.isActive) {
+          currentCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
-        if (rows[row][column + 1].isActive) {
-          rows = update(rows, { [row]: { [column + 1]: { player: { $set: prevState.player } } } });
+        if (nextCell.isActive) {
+          nextCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
@@ -89,15 +88,16 @@ class Field extends React.PureComponent {
         if (currentCell.bottom === 2) {
           return;
         }
-        rows = update(rows, { [row]: { [column]: { bottom: { $set: 2 } } } });
-        rows = update(rows, { [row + 1]: { [column]: { top: { $set: 2 } } } });
-        if (rows[row][column].isActive) {
-          rows = update(rows, { [row]: { [column]: { player: { $set: prevState.player } } } });
+        nextCell = rows[row + 1][column];
+        currentCell.bottom = 2;
+        nextCell.top = 2;
+        if (currentCell.isActive) {
+          currentCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
-        if (rows[row + 1][column].isActive) {
-          rows = update(rows, { [row + 1]: { [column]: { player: { $set: prevState.player } } } });
+        if (nextCell.isActive) {
+          nextCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
@@ -106,15 +106,16 @@ class Field extends React.PureComponent {
         if (currentCell.left === 2) {
           return;
         }
-        rows = update(rows, { [row]: { [column]: { left: { $set: 2 } } } });
-        rows = update(rows, { [row]: { [column - 1]: { right: { $set: 2 } } } });
-        if (rows[row][column].isActive) {
-          rows = update(rows, { [row]: { [column]: { player: { $set: prevState.player } } } });
+        nextCell = rows[row][column - 1];
+        currentCell.left = 2;
+        nextCell.right = 2;
+        if (currentCell.isActive) {
+          currentCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
-        if (rows[row][column - 1].isActive) {
-          rows = update(rows, { [row]: { [column - 1]: { player: { $set: prevState.player } } } });
+        if (nextCell.isActive) {
+          nextCell.player = prevState.player;
           keepTurn = true;
           scoreIncrement++;
         }
