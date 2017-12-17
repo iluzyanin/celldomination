@@ -9,22 +9,27 @@ class Field extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [],
+      rows: buildRows(5),
+      fieldSize: 5,
       player: 0,
       playerOneScore: 0,
       playerTwoScore: 0,
       isGameOver: false
     }
     this.activateBorder = this.activateBorder.bind(this);
+    this.reset = this.reset.bind(this);
+    this.fieldSizeChange = this.fieldSizeChange.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({ rows: buildRows(3) });
-  }
+  /*componentDidMount() {
+    this.setState({ rows: buildRows(5) });
+  }*/
 
   render() {
     return (
       <div className={classNames('container', { 'container--animated': this.state.isContainerAnimated })}>
+        <button className="button" onClick={this.reset}>Reset</button>
+        <input type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
         {this.state.rows.map((cells, rowIndex) =>
           <div className="row" key={rowIndex}>
             {cells.map((cell, cellIndex) =>
@@ -184,6 +189,20 @@ class Field extends React.PureComponent {
     }
     const randomMove = availableMoves[Math.floor(Math.random() * (availableMoves.length))];
     this.activateBorder(randomMove.row, randomMove.column, randomMove.border);
+  }
+
+  fieldSizeChange(event) {
+    this.setState({fieldSize: parseInt(event.target.value, 10)});
+  }
+
+  reset() {
+    this.setState(prevState => ({
+      rows: buildRows(prevState.fieldSize),
+      player: 0,
+      playerOneScore: 0,
+      playerTwoScore: 0,
+      isGameOver: false
+    }));
   }
 }
 
