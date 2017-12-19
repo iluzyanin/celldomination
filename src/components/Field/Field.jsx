@@ -18,6 +18,7 @@ class Field extends React.PureComponent {
     this.activateBorder = this.activateBorder.bind(this);
     this.reset = this.reset.bind(this);
     this.fieldSizeChange = this.fieldSizeChange.bind(this);
+    this.onCellClick = this.onCellClick.bind(this);
   }
 
   render() {
@@ -27,8 +28,14 @@ class Field extends React.PureComponent {
         <input type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
         {this.state.rows.map((cells, rowIndex) =>
           <div className="row" key={rowIndex}>
-            {cells.map((cell, cellIndex) =>
-              <Cell key={cellIndex} onBorderClick={(borderIndex) => this.activateBorder(rowIndex, cellIndex, borderIndex)} {...cell} />)}
+            {
+              cells.map((cell, cellIndex) =>
+              <Cell
+                key={cellIndex}
+                onBorderClick={(borderIndex) => this.activateBorder(rowIndex, cellIndex, borderIndex)}
+                onClick={() => this.onCellClick(rowIndex, cellIndex)}
+                {...cell} />)
+              }
           </div>)}
         <p>Current player: {this.state.player}</p>
         <p>Player one score: {this.state.playerOneScore}</p>
@@ -139,6 +146,16 @@ class Field extends React.PureComponent {
 
       return { rows, player, playerOneScore, playerTwoScore, isGameOver };
     });
+  }
+
+  onCellClick(row, column) {
+    const currentCell = this.state.rows[row][column];
+    const openBorders = currentCell.getOpenBorders();
+    if (openBorders.length !== 1) {
+      return;
+    }
+
+    this.activateBorder(row, column, openBorders[0]);
   }
 
   computerMove() {
