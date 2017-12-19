@@ -8,24 +8,31 @@ class Field extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      rows: buildRows(5),
-      fieldSize: 5,
+      rows: buildRows(props.size),
       player: 0,
       playerOneScore: 0,
       playerTwoScore: 0,
       isGameOver: false
     }
     this.activateBorder = this.activateBorder.bind(this);
-    this.reset = this.reset.bind(this);
-    this.fieldSizeChange = this.fieldSizeChange.bind(this);
     this.onCellClick = this.onCellClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.size !== this.props.size) {
+      this.setState({
+        rows: buildRows(nextProps.size),
+        player: 0,
+        playerOneScore: 0,
+        playerTwoScore: 0,
+        isGameOver: false
+      });
+    }
   }
 
   render() {
     return (
       <div className={classNames('container', { 'container--animated': this.state.isContainerAnimated })}>
-        <button className="button" onClick={this.reset}>Reset</button>
-        <input type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
         {this.state.rows.map((cells, rowIndex) =>
           <div className="row" key={rowIndex}>
             {
@@ -198,7 +205,6 @@ class Field extends React.PureComponent {
     var goodMoves = availableMoves.filter(function (cell) {
       return !cell.isLowPriority;
     });
-    console.log(goodMoves.length, availableMoves.length)
 
     if (goodMoves.length > 0) {
       const randomMove = goodMoves[Math.floor(Math.random() * (goodMoves.length))];
@@ -207,20 +213,6 @@ class Field extends React.PureComponent {
     }
     const randomMove = availableMoves[Math.floor(Math.random() * (availableMoves.length))];
     this.activateBorder(randomMove.row, randomMove.column, randomMove.border);
-  }
-
-  fieldSizeChange(event) {
-    this.setState({fieldSize: parseInt(event.target.value, 10)});
-  }
-
-  reset() {
-    this.setState(prevState => ({
-      rows: buildRows(prevState.fieldSize),
-      player: 0,
-      playerOneScore: 0,
-      playerTwoScore: 0,
-      isGameOver: false
-    }));
   }
 }
 
