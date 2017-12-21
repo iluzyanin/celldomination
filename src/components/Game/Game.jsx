@@ -19,7 +19,10 @@ class Game extends React.PureComponent {
   }
 
   reset() {
-    this.setState({ fieldSize: this.state.fieldSizeInput });
+    if (this.state.fieldSize === this.state.fieldSizeInput) {
+      this.forceUpdate(); // TODO: Find a better way to reset a field with the same size
+    }
+    this.setState((prevState) => ({ fieldSize: prevState.fieldSizeInput }));
   }
 
   render() {
