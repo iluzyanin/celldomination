@@ -19,7 +19,7 @@ class Field extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    //if (nextProps.size !== this.props.size) { // TODO: Find a better way to reset a field with the same size
+    if (nextProps.size !== this.props.size) {
       this.setState({
         rows: buildRows(nextProps.size),
         player: 0,
@@ -27,7 +27,7 @@ class Field extends React.PureComponent {
         playerTwoScore: 0,
         isGameOver: false
       });
-    //}
+    }
   }
 
   render() {

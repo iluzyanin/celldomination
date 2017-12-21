@@ -1,5 +1,6 @@
 import React from 'react';
 import Field from '../Field/Field';
+import './Game.css';
 
 class Game extends React.PureComponent {
   constructor(props) {
@@ -19,17 +20,16 @@ class Game extends React.PureComponent {
   }
 
   reset() {
-    if (this.state.fieldSize === this.state.fieldSizeInput) {
-      this.forceUpdate(); // TODO: Find a better way to reset a field with the same size
-    }
     this.setState((prevState) => ({ fieldSize: prevState.fieldSizeInput }));
   }
 
   render() {
     return (
       <div>
-        <button className="button" onClick={this.reset}>Reset</button>
-        <input type="number" value={this.state.fieldSizeInput} onChange={this.fieldSizeChange} />
+        <div className="FieldSettings">
+          Field size: <input className="FieldSizeInput" type="number" value={this.state.fieldSizeInput} onChange={this.fieldSizeChange} />
+          <button className="ResetButton" onClick={this.reset}>Reset</button>
+        </div>
         <Field size={this.state.fieldSize} />
       </div>
     );
