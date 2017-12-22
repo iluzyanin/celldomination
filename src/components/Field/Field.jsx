@@ -61,79 +61,45 @@ class Field extends React.PureComponent {
       let nextCell;
       let keepTurn = false;
       let scoreIncrement = 0;
-      if (border === 0) {
-        if (currentCell.top === 2) {
-          return;
-        }
-        nextCell = rows[row - 1][column];
-        currentCell.top = 2;
-        nextCell.bottom = 2;
-        if (currentCell.isActive) {
-          currentCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-        if (nextCell.isActive) {
-          nextCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-      }
-      if (border === 1) {
-        if (currentCell.right === 2) {
-          return;
-        }
-        nextCell = rows[row][column + 1];
+      const borderNeighbours = [{
+        borderName: 'top',
+        nextRow: row - 1,
+        nextColumn: column
+      }, {
+        borderName: 'right',
+        nextRow: row,
+        nextColumn: column + 1
+      }, {
+        borderName: 'bottom',
+        nextRow: row + 1,
+        nextColumn: column
+      }, {
+        borderName: 'left',
+        nextRow: row,
+        nextColumn: column - 1
+      }];
 
-        currentCell.right = 2;
-        nextCell.left = 2;
-        if (currentCell.isActive) {
-          currentCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
+      borderNeighbours.forEach((borderInfo, borderIndex) => {
+        if (border === borderIndex) {
+          if (currentCell[borderInfo.borderName] === 2) {
+            return;
+          }
+          nextCell = rows[borderInfo.nextRow][borderInfo.nextColumn]; 
+          currentCell[borderInfo.borderName] = 2;
+          let nextCellBorderName = borderNeighbours[borderIndex > 1 ? borderIndex - 2 : borderIndex + 2].borderName;
+          nextCell[nextCellBorderName] = 2;
+          if (currentCell.isActive) {
+            currentCell.player = prevState.player;
+            keepTurn = true;
+            scoreIncrement++;
+          }
+          if (nextCell.isActive) {
+            nextCell.player = prevState.player;
+            keepTurn = true;
+            scoreIncrement++;
+          }
         }
-        if (nextCell.isActive) {
-          nextCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-      }
-      if (border === 2) {
-        if (currentCell.bottom === 2) {
-          return;
-        }
-        nextCell = rows[row + 1][column];
-        currentCell.bottom = 2;
-        nextCell.top = 2;
-        if (currentCell.isActive) {
-          currentCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-        if (nextCell.isActive) {
-          nextCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-      }
-      if (border === 3) {
-        if (currentCell.left === 2) {
-          return;
-        }
-        nextCell = rows[row][column - 1];
-        currentCell.left = 2;
-        nextCell.right = 2;
-        if (currentCell.isActive) {
-          currentCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-        if (nextCell.isActive) {
-          nextCell.player = prevState.player;
-          keepTurn = true;
-          scoreIncrement++;
-        }
-      }
+      });
 
       let playerOneScore = keepTurn && prevState.player === 0 ? prevState.playerOneScore + scoreIncrement : prevState.playerOneScore;
       let playerTwoScore = keepTurn && prevState.player === 1 ? prevState.playerTwoScore + scoreIncrement : prevState.playerTwoScore;
