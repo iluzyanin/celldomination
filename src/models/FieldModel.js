@@ -70,4 +70,24 @@ function buildRows(halfSize) {
   return rows;
 }
 
-export default buildRows;
+function getCellNeighbours(row, column) {
+  return [{
+    borderName: 'top',
+    nextRow: row - 1,
+    nextColumn: column
+  }, {
+    borderName: 'right',
+    nextRow: row,
+    nextColumn: column + 1
+  }, {
+    borderName: 'bottom',
+    nextRow: row + 1,
+    nextColumn: column
+  }, {
+    borderName: 'left',
+    nextRow: row,
+    nextColumn: column - 1
+  }];
+}
+
+export { buildRows, getCellNeighbours };

@@ -1,7 +1,7 @@
 import './Field.css';
 import React from 'react';
 import Cell from '../Cell/Cell';
-import buildRows from '../../models/FieldModel';
+import { buildRows, getCellNeighbours } from '../../models/FieldModel';
 import classNames from 'classnames';
 
 class Field extends React.PureComponent {
@@ -56,50 +56,31 @@ class Field extends React.PureComponent {
 
   activateBorder(row, column, border) {
     this.setState(prevState => {
-      let rows = prevState.rows.slice().map(r => r.slice());
+      const rows = prevState.rows.slice().map(r => r.slice());
+      const neighbours = getCellNeighbours(row, column);
+      const neighbour = neighbours[border];
       const currentCell = rows[row][column];
       let nextCell;
       let keepTurn = false;
       let scoreIncrement = 0;
-      const borderNeighbours = [{
-        borderName: 'top',
-        nextRow: row - 1,
-        nextColumn: column
-      }, {
-        borderName: 'right',
-        nextRow: row,
-        nextColumn: column + 1
-      }, {
-        borderName: 'bottom',
-        nextRow: row + 1,
-        nextColumn: column
-      }, {
-        borderName: 'left',
-        nextRow: row,
-        nextColumn: column - 1
-      }];
 
-      borderNeighbours.forEach((borderInfo, borderIndex) => {
-        if (border === borderIndex) {
-          if (currentCell[borderInfo.borderName] === 2) {
-            return;
-          }
-          nextCell = rows[borderInfo.nextRow][borderInfo.nextColumn]; 
-          currentCell[borderInfo.borderName] = 2;
-          let nextCellBorderName = borderNeighbours[borderIndex > 1 ? borderIndex - 2 : borderIndex + 2].borderName;
-          nextCell[nextCellBorderName] = 2;
-          if (currentCell.isActive) {
-            currentCell.player = prevState.player;
-            keepTurn = true;
-            scoreIncrement++;
-          }
-          if (nextCell.isActive) {
-            nextCell.player = prevState.player;
-            keepTurn = true;
-            scoreIncrement++;
-          }
-        }
-      });
+      if (currentCell[neighbour.borderName] === 2) {
+        return;
+      }
+      nextCell = rows[neighbour.nextRow][neighbour.nextColumn]; 
+      currentCell[neighbour.borderName] = 2;
+      const nextCellBorderName = neighbours[border > 1 ? border - 2 : border + 2].borderName;
+      nextCell[nextCellBorderName] = 2;
+      if (currentCell.isActive) {
+        currentCell.player = prevState.player;
+        keepTurn = true;
+        scoreIncrement++;
+      }
+      if (nextCell.isActive) {
+        nextCell.player = prevState.player;
+        keepTurn = true;
+        scoreIncrement++;
+      }
 
       let playerOneScore = keepTurn && prevState.player === 0 ? prevState.playerOneScore + scoreIncrement : prevState.playerOneScore;
       let playerTwoScore = keepTurn && prevState.player === 1 ? prevState.playerTwoScore + scoreIncrement : prevState.playerTwoScore;
@@ -111,7 +92,7 @@ class Field extends React.PureComponent {
         if (player === 1) {
           setTimeout(() => {
             this.computerMove();
-          }, 100);
+          });
         }
       } else {
         isGameOver = true;
