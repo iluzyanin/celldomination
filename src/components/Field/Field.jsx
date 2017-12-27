@@ -2,7 +2,6 @@ import './Field.css';
 import React from 'react';
 import Cell from '../Cell/Cell';
 import { buildRows, getCellNeighbours } from '../../models/FieldModel';
-import classNames from 'classnames';
 
 class Field extends React.PureComponent {
   constructor(props) {
@@ -32,7 +31,7 @@ class Field extends React.PureComponent {
 
   render() {
     return (
-      <div className={classNames('container', { 'container--animated': this.state.isContainerAnimated })}>
+      <div className='container'>
         {this.state.rows.map((cells, rowIndex) =>
           <div className="row" key={rowIndex}>
             {
@@ -92,7 +91,7 @@ class Field extends React.PureComponent {
         if (player === 1) {
           setTimeout(() => {
             this.computerMove();
-          });
+          }, 100);
         }
       } else {
         isGameOver = true;
@@ -121,15 +120,17 @@ class Field extends React.PureComponent {
         if (cell.player !== undefined) {
           continue;
         }
-        const openBorders = cell.getOpenBorders();
 
+        const openBorders = cell.getOpenBorders();
         if (openBorders.length === 1) {
           this.activateBorder(i, j, openBorders[0]);
           return;
         }
+
         if (openBorders.length === 0) {
           continue;
         }
+
         for (let k = 0; k < openBorders.length; k++) {
           const isLowPriority = openBorders.length === 2 ||
             (i > 0 && openBorders[k] === 0 && this.state.rows[i - 1][j].getOpenBorders().length === 2) ||
@@ -149,16 +150,13 @@ class Field extends React.PureComponent {
     if (availableMoves.length === 0) {
       return;
     }
-    var goodMoves = availableMoves.filter(function (cell) {
-      return !cell.isLowPriority;
-    });
 
+    let randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    const goodMoves = availableMoves.filter(cell => !cell.isLowPriority);
     if (goodMoves.length > 0) {
-      const randomMove = goodMoves[Math.floor(Math.random() * (goodMoves.length))];
-      this.activateBorder(randomMove.row, randomMove.column, randomMove.border);
-      return;
+      randomMove = goodMoves[Math.floor(Math.random() * goodMoves.length)];
     }
-    const randomMove = availableMoves[Math.floor(Math.random() * (availableMoves.length))];
+
     this.activateBorder(randomMove.row, randomMove.column, randomMove.border);
   }
 }
