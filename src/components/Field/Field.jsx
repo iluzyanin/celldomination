@@ -82,8 +82,12 @@ class Field extends React.PureComponent {
         scoreIncrement++;
       }
 
-      let playerOneScore = keepTurn && prevState.player === 0 ? prevState.playerOneScore + scoreIncrement : prevState.playerOneScore;
-      let playerTwoScore = keepTurn && prevState.player === 1 ? prevState.playerTwoScore + scoreIncrement : prevState.playerTwoScore;
+      let playerOneScore = prevState.playerOneScore;
+      let playerTwoScore = prevState.playerTwoScore;
+
+      playerOneScore += keepTurn && prevState.player === 0 ? scoreIncrement : 0;
+      playerTwoScore += keepTurn && prevState.player === 1 ? scoreIncrement : 0;
+      
       let player = keepTurn ? prevState.player : prevState.player === 0 ? 1 : 0;
 
       let areMovesExist = rows.some(cells => cells.some(cell => cell.hasMove));

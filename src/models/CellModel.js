@@ -12,7 +12,7 @@ class CellModel {
   }
 
   get hasMove() {
-    return this.top === 1 || this.right === 1 || this.bottom === 1 || this.left === 1;
+    return this.getOpenBorders().length > 0;
   }
 
   getOpenBorders() {
