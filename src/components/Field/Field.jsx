@@ -2,6 +2,7 @@ import './Field.css';
 import React from 'react';
 import Cell from '../Cell/Cell';
 import { buildRows, getCellNeighbours } from '../../models/FieldModel';
+import computeMove from '../../services/computer';
 
 class Field extends React.PureComponent {
   constructor(props) {
@@ -36,18 +37,18 @@ class Field extends React.PureComponent {
           <div className="row" key={rowIndex}>
             {
               cells.map((cell, cellIndex) =>
-              <Cell
-                key={cellIndex}
-                onBorderClick={(borderIndex) => this.activateBorder(rowIndex, cellIndex, borderIndex)}
-                onClick={() => this.onCellClick(rowIndex, cellIndex)}
-                {...cell} />)
-              }
+                <Cell
+                  key={cellIndex}
+                  onBorderClick={(borderIndex) => this.activateBorder(rowIndex, cellIndex, borderIndex)}
+                  onClick={() => this.onCellClick(rowIndex, cellIndex)}
+                  {...cell} />)
+            }
           </div>)}
         <p>Current player: {this.state.player}</p>
         <p>Player one score: {this.state.playerOneScore}</p>
         <p>Player two score: {this.state.playerTwoScore}</p>
-        {this.state.isGameOver && 
-        <p>Game over! {this.state.playerOneScore > this.state.playerTwoScore ? 'You won :)' : 'Computer won :('}</p>
+        {this.state.isGameOver &&
+          <p>Game over! {this.state.playerOneScore > this.state.playerTwoScore ? 'You won :)' : 'Computer won :('}</p>
         }
       </div>
     );
@@ -66,7 +67,7 @@ class Field extends React.PureComponent {
       if (currentCell[neighbour.borderName] === 2) {
         return;
       }
-      nextCell = rows[neighbour.nextRow][neighbour.nextColumn]; 
+      nextCell = rows[neighbour.nextRow][neighbour.nextColumn];
       currentCell[neighbour.borderName] = 2;
       const nextCellBorderName = neighbours[border > 1 ? border - 2 : border + 2].borderName;
       nextCell[nextCellBorderName] = 2;
@@ -89,9 +90,7 @@ class Field extends React.PureComponent {
       let isGameOver = prevState.isGameOver;
       if (areMovesExist) {
         if (player === 1) {
-          setTimeout(() => {
-            this.computerMove();
-          }, 100);
+          this.computerMove();
         }
       } else {
         isGameOver = true;
@@ -112,52 +111,12 @@ class Field extends React.PureComponent {
   }
 
   computerMove() {
-    const availableMoves = [];
-    const size = this.state.rows.length;
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        const cell = this.state.rows[i][j];
-        if (cell.player !== undefined) {
-          continue;
-        }
-
-        const openBorders = cell.getOpenBorders();
-        if (openBorders.length === 1) {
-          this.activateBorder(i, j, openBorders[0]);
-          return;
-        }
-
-        if (openBorders.length === 0) {
-          continue;
-        }
-
-        for (let k = 0; k < openBorders.length; k++) {
-          const isLowPriority = openBorders.length === 2 ||
-            (i > 0 && openBorders[k] === 0 && this.state.rows[i - 1][j].getOpenBorders().length === 2) ||
-            (j < size - 1 && openBorders[k] === 1 && this.state.rows[i][j + 1].getOpenBorders().length === 2) ||
-            (i < size - 1 && openBorders[k] === 2 && this.state.rows[i + 1][j].getOpenBorders().length === 2) ||
-            (j > 0 && openBorders[k] === 3 && this.state.rows[i][j - 1].getOpenBorders().length === 2);
-          availableMoves.push({
-            row: i,
-            column: j,
-            border: openBorders[k],
-            isLowPriority: isLowPriority
-          });
-        }
+    setTimeout(() => {
+      const move = computeMove(this.state.rows);
+      if (move) {
+        this.activateBorder(move.row, move.column, move.border);
       }
-    }
-
-    if (availableMoves.length === 0) {
-      return;
-    }
-
-    let randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-    const goodMoves = availableMoves.filter(cell => !cell.isLowPriority);
-    if (goodMoves.length > 0) {
-      randomMove = goodMoves[Math.floor(Math.random() * goodMoves.length)];
-    }
-
-    this.activateBorder(randomMove.row, randomMove.column, randomMove.border);
+    }, 100);
   }
 }
 
