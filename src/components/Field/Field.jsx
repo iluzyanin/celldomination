@@ -19,7 +19,7 @@ class Field extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.size !== this.props.size) {
+    if (nextProps.renderToggle !== this.props.renderToggle) {
       this.setState({
         rows: buildRows(nextProps.size),
         player: 0,

@@ -8,7 +8,8 @@ class Game extends React.PureComponent {
 
     this.state = {
       fieldSizeInput: 5,
-      fieldSize: 5
+      fieldSize: 5,
+      renderToggle: false
     }
 
     this.reset = this.reset.bind(this);
@@ -20,7 +21,11 @@ class Game extends React.PureComponent {
   }
 
   reset() {
-    this.setState((prevState) => ({ fieldSize: prevState.fieldSizeInput }));
+    this.setState((prevState) => ({
+        fieldSize: prevState.fieldSizeInput,
+        renderToggle: !prevState.renderToggle
+      })
+    );
   }
 
   render() {
@@ -30,7 +35,7 @@ class Game extends React.PureComponent {
           Field size: <input className="FieldSizeInput" type="number" value={this.state.fieldSizeInput} onChange={this.fieldSizeChange} />
           <button className="ResetButton" onClick={this.reset}>Reset</button>
         </div>
-        <Field size={this.state.fieldSize} />
+        <Field size={this.state.fieldSize} renderToggle={this.state.renderToggle} />
       </div>
     );
   }
