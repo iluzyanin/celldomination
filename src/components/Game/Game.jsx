@@ -36,7 +36,7 @@ class Game extends React.PureComponent {
 
   handleBorderClick(row, column, border) {
     this.setState(prevState => {
-      const rows = prevState.rows.slice().map(r => r.slice());
+      const rows = prevState.rows.slice().map(r => r.slice().map(c => c.clone()));
       const neighbours = getCellNeighbours(row, column);
       const neighbour = neighbours[border];
       const currentCell = rows[row][column];

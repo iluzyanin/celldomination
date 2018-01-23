@@ -1,10 +1,10 @@
 class CellModel {
-  constructor(top, right, bottom, left) {
+  constructor(top, right, bottom, left, player) {
     this.top = top;
     this.right = right;
     this.bottom = bottom;
     this.left = left;
-    this.player = undefined;
+    this.player = player;
   }
 
   get isActive() {
@@ -23,6 +23,10 @@ class CellModel {
     if (this.left === 1) openBorders.push(3);
 
     return openBorders;
+  }
+
+  clone() {
+    return new CellModel(this.top, this.right, this.bottom, this.left, this.player);
   }
 }
 

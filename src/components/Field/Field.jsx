@@ -1,7 +1,6 @@
 import './Field.css';
 import React from 'react';
 import Cell from '../Cell/Cell';
-import { buildRows, getCellNeighbours } from '../../models/FieldModel';
 
 class Field extends React.PureComponent {
   constructor(props) {
