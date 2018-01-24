@@ -1,5 +1,6 @@
 import React from 'react';
 import Field from '../Field/Field';
+import Score from '../Score/Score';
 import { buildRows, getCellNeighbours } from '../../models/FieldModel';
 import computeMove from '../../services/computer';
 import './Game.css';
@@ -100,10 +101,8 @@ class Game extends React.PureComponent {
           Field size: <input className="FieldSizeInput" type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
           <button className="ResetButton" onClick={this.reset}>Reset</button>
         </div>
+        <Score playerOneScore={this.state.playerOneScore} playerTwoScore={this.state.playerTwoScore} />
         <Field rows={this.state.rows} onBorderClick={this.handleBorderClick} />
-        <p>Current player: {this.state.player}</p>
-        <p>Player one score: {this.state.playerOneScore}</p>
-        <p>Player two score: {this.state.playerTwoScore}</p>
         {this.state.isGameOver &&
           <p>Game over! {this.state.playerOneScore > this.state.playerTwoScore ? 'You won :)' : 'Computer won :('}</p>
         }
