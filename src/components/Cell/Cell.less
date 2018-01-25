@@ -1,19 +1,16 @@
-@thickness: 2px;
-@shift: (@thickness + 2) / 2;
-@red: #FF4136;
-@green: #2ECC40;
-@teal: #39CCCC;
-@fuchsia: #F012BE;
-@orange: #FF851B;
-@light-cyan: #EEEFFF;
-@dark-gray: #666666;
+.box {
+  --thickness: 2px;
+  --shift: 2px;
+  --negative-thikness: ~"calc(var(--thickness)*-1)";
+  --negative-shift: ~"calc(var(--shift)*-1)";
+}
 
 .box {
   &.isFirstPlayer {
-    background-color: @green;
+    background-color: var(--teal);
   }
   &.isSecondPlayer {
-    background-color: @orange;
+    background-color: var(--orange);
   }
   width: 30px;
   height: 30px;
@@ -24,59 +21,59 @@
   &:before {
     content: '';
     position: absolute;
-    top: -@thickness;
-    left: -@thickness;
-    right: -@thickness;
-    bottom: -@thickness;
+    top: var(--negative-thikness);
+    left: var(--negative-thikness);
+    right: var(--negative-thikness);
+    bottom: var(--negative-thikness);
   }
 
   transition: background-color 0.05s;
   border-radius: 3px;
-  border: 1px solid @light-cyan;
+  border: 1px solid var(--light-cyan);
   background-clip: padding-box;
 
   &:hover {
-    background-color: @teal;
-    border-color: @teal;
+    background-color: var(--green);
+    border-color: var(--green);
     z-index: 1;
     cursor: pointer;
   }
   
   &.active {
-    background-color: @dark-gray;
-    border-color: @dark-gray;
+    background-color: var(--dark-gray);
+    border-color: var(--dark-gray);
     z-index: 1;
     cursor: default;
   }
   
   position: absolute;
-  background-color: @light-cyan;
+  background-color: var(--light-cyan);
 }
 
 .top {
   .border;
   width: 100%;
-  height: @thickness;
-  top: -@shift;
+  height: var(--thickness);
+  top: var(--negative-shift);
 }
 
 .right {
   .border;
   height: 100%;
-  width: @thickness;
-  right: -@shift;
+  width: var(--thickness);
+  right: var(--negative-shift);
 }
 
 .bottom {
   .border;
   width: 100%;
-  height: @thickness;
-  bottom: -@shift;
+  height: var(--thickness);
+  bottom: var(--negative-thikness);
 }
 
 .left {
   .border;
   height: 100%;
-  width: @thickness;
-  left: -@shift;
+  width: var(--thickness);
+  left: var(--negative-shift);
 }
