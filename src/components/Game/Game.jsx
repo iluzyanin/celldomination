@@ -1,6 +1,7 @@
 import React from 'react';
 import Field from '../Field/Field';
 import Score from '../Score/Score';
+import { Button, Form, ControlLabel, FormControl } from 'react-bootstrap';
 import { buildRows, getCellNeighbours } from '../../models/FieldModel';
 import computeMove from '../../services/computer';
 import './Game.css';
@@ -97,10 +98,10 @@ class Game extends React.PureComponent {
   render() {
     return (
       <div>
-        <div className="FieldSettings">
-          Field size: <input className="FieldSizeInput" type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
-          <button className="ResetButton" onClick={this.reset}>Reset</button>
-        </div>
+        <Form inline className="FieldSettings">
+          <ControlLabel>Field size:</ControlLabel> <FormControl bsSize="small" type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
+          <Button bsStyle="primary" className="ResetButton" onClick={this.reset}>Reset</Button>
+        </Form>
         <Score playerOneScore={this.state.playerOneScore} playerTwoScore={this.state.playerTwoScore} />
         <Field rows={this.state.rows} onBorderClick={this.handleBorderClick} />
         {this.state.isGameOver &&
