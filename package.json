@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run build-css && react-scripts start",
+    "dev": "npm run watch-css & react-scripts start",
     "build": "react-scripts build",
     "build-css": "node-less-chokidar src/ src/",
     "watch-css": "node-less-chokidar src/ src/ --watch",
