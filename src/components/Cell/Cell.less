@@ -1,11 +1,4 @@
 .box {
-  --thickness: 4px;
-  --shift: 4px;
-  --negative-thikness: -2px;
-  --negative-shift: -2px;
-}
-
-.box {
   &.isFirstPlayer {
     background-color: var(--teal);
   }
@@ -15,65 +8,4 @@
   width: 30px;
   height: 30px;
   position: relative;
-}
-
-.border {
-  &:before {
-    content: '';
-    position: absolute;
-    top: var(--negative-thikness);
-    left: var(--negative-thikness);
-    right: var(--negative-thikness);
-    bottom: var(--negative-thikness);
-  }
-
-  transition: background-color 0.05s;
-  border-radius: 3px;
-  border: 1px solid var(--light-cyan);
-  background-clip: padding-box;
-
-  &:hover {
-    background-color: var(--green);
-    border-color: var(--green);
-    z-index: 1;
-    cursor: pointer;
-  }
-  
-  &.active {
-    background-color: var(--dark-gray);
-    border-color: var(--dark-gray);
-    z-index: 1;
-    cursor: default;
-  }
-  
-  position: absolute;
-  background-color: var(--light-cyan);
-}
-
-.top {
-  .border;
-  width: 100%;
-  height: var(--thickness);
-  top: var(--negative-shift);
-}
-
-.right {
-  .border;
-  height: 100%;
-  width: var(--thickness);
-  right: var(--negative-shift);
-}
-
-.bottom {
-  .border;
-  width: 100%;
-  height: var(--thickness);
-  bottom: var(--negative-thikness);
-}
-
-.left {
-  .border;
-  height: 100%;
-  width: var(--thickness);
-  left: var(--negative-shift);
 }

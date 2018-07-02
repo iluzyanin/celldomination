@@ -1,0 +1,63 @@
+@thickness: 4px;
+@half-thickness: 2px;
+
+.border {
+  &:before {
+    content: '';
+    position: absolute;
+    top: -@half-thickness;
+    left: -@half-thickness;
+    right: -@half-thickness;
+    bottom: -@half-thickness;
+  }
+
+  transition: background-color 0.05s;
+  border-radius: 3px;
+  border: 1px solid var(--light-cyan);
+  background-clip: padding-box;
+
+  &:hover {
+    background-color: var(--green);
+    border-color: var(--green);
+    z-index: 1;
+    cursor: pointer;
+  }
+  
+  &.active {
+    background-color: var(--dark-gray);
+    border-color: var(--dark-gray);
+    z-index: 1;
+    cursor: default;
+  }
+  
+  position: absolute;
+  background-color: var(--light-cyan);
+}
+
+.top {
+  .border;
+  width: 100%;
+  height: @thickness;
+  top: -@half-thickness;
+}
+
+.right {
+  .border;
+  height: 100%;
+  width: @thickness;
+  right: -@half-thickness;
+}
+
+.bottom {
+  .border;
+  width: 100%;
+  height: @thickness;
+  bottom: -@half-thickness;
+}
+
+.left {
+  .border;
+  height: 100%;
+  width: @thickness;
+  left: -@half-thickness;
+}

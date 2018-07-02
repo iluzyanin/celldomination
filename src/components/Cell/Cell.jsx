@@ -1,17 +1,9 @@
-import './Cell.css';
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Cell.css';
+import Border from '../Border/Border';
 
 const Cell = (props) => {
-  const borderClassName = (border) => {
-    let cssClass = border;
-    if (props[border] === 2) {
-      cssClass += ' active';
-    }
-
-    return cssClass;
-  };
-
   const cellClassName = () => {
     const { top, right, bottom, left, player } = props;
     let cssClass = "box";
@@ -25,23 +17,19 @@ const Cell = (props) => {
   const handleClick = (index, event) => {
     event.stopPropagation();
     props.onBorderClick(index);
-    console.log(index)
   }
 
   return (
     <div className={cellClassName()} onClick={() => props.onClick()}>
-      {props.top > 0 &&
-        <div className={borderClassName('top')} onClick={handleClick.bind(null, 0)}></div>
-      }
-      {props.right > 0 &&
-        <div className={borderClassName('right')} onClick={handleClick.bind(null, 1)}></div>
-      }
-      {props.bottom > 0 &&
-        <div className={borderClassName('bottom')} onClick={handleClick.bind(null, 2)}></div>
-      }
-      {props.left > 0 &&
-        <div className={borderClassName('left')} onClick={handleClick.bind(null, 3)}></div>
-      }
+      {['top', 'right', 'bottom', 'left'].map((borderName, index) => (
+        props[borderName] > 0 &&
+        <Border
+          key={borderName}
+          className={borderName}
+          onClick={handleClick.bind(null, index)}
+          isActive={props[borderName] === 2}>
+        </Border>
+      ))}
     </div>
   );
 }
