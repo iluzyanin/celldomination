@@ -1,3 +1,4 @@
+@import '../../index.less';
 @thickness: 4px;
 @half-thickness: 2px;
 
@@ -11,27 +12,26 @@
     bottom: -@half-thickness;
   }
 
-  transition: background-color 0.05s;
   border-radius: 3px;
-  border: 1px solid var(--light-cyan);
+  border: 1px solid @light-cyan;
   background-clip: padding-box;
 
   &:hover {
-    background-color: var(--green);
-    border-color: var(--green);
+    background-color: @green;
+    border-color: @green;
     z-index: 1;
     cursor: pointer;
   }
   
   &.active {
-    background-color: var(--dark-gray);
-    border-color: var(--dark-gray);
+    background-color: @dark-gray;
+    border-color: @dark-gray;
     z-index: 1;
     cursor: default;
   }
   
   position: absolute;
-  background-color: var(--light-cyan);
+  background-color: @light-cyan;
 }
 
 .top {
