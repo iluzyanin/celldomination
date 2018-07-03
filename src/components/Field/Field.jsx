@@ -1,46 +1,39 @@
-import './Field.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Cell from '../Cell/Cell';
+import './Field.css';
 
-class Field extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.handleOnBorderClick = this.handleOnBorderClick.bind(this);
-    this.onCellClick = this.onCellClick.bind(this);
-  }
-
-  render() {
-    return (
-      <div className='container'>
-        {this.props.rows.map((cells, rowIndex) =>
-          <div className="row" key={rowIndex}>
-            {
-              cells.map((cell, cellIndex) =>
-                <Cell
-                  key={cellIndex}
-                  onBorderClick={(borderIndex) => this.props.onBorderClick(rowIndex, cellIndex, borderIndex)}
-                  onClick={() => this.onCellClick(rowIndex, cellIndex)}
-                  {...cell} />)
-            }
-          </div>)}
-      </div>
-    );
-  }
-
-  handleOnBorderClick(borderIndex) {
-    //this.props.onBorderClick(rowIndex, cellIndex, borderIndex);
-  }
-
-  onCellClick(row, column) {
-    const currentCell = this.props.rows[row][column];
+const Field = (props) => {
+  const onCellClick = (row, column) => {
+    const currentCell = props.rows[row][column];
     const openBorders = currentCell.getOpenBorders();
     if (openBorders.length !== 1) {
       return;
     }
 
-    this.props.onBorderClick(row, column, openBorders[0]);
+    props.onBorderClick(row, column, openBorders[0]);
   }
+
+  return (
+    <div className='container'>
+      {props.rows.map((cells, rowIndex) =>
+        <div className="row" key={rowIndex}>
+          {
+            cells.map((cell, cellIndex) =>
+              <Cell
+                key={cellIndex}
+                onBorderClick={(borderIndex) => props.onBorderClick(rowIndex, cellIndex, borderIndex)}
+                onClick={() => onCellClick(rowIndex, cellIndex)}
+                {...cell} />)
+          }
+        </div>)}
+    </div>
+  );
 }
+
+Field.propTypes = {
+  rows: PropTypes.array.isRequired,
+  onBorderClick: PropTypes.func.isRequired
+};
 
 export default Field;
