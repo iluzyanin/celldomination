@@ -1,7 +1,8 @@
 import React from 'react';
+import { Button, Form, ControlLabel, FormControl } from 'react-bootstrap';
 import Field from '../Field/Field';
 import Score from '../Score/Score';
-import { Button, Form, ControlLabel, FormControl } from 'react-bootstrap';
+import GameResult from '../GameResult/GameResult';
 import { buildRows, getCellNeighbours } from '../../models/FieldModel';
 import computeMove from '../../services/computer';
 import './Game.css';
@@ -96,16 +97,18 @@ class Game extends React.PureComponent {
   }
 
   render() {
+    const playerOneScore = this.state.playerOneScore;
+    const playerTwoScore = this.state.playerTwoScore;
     return (
       <div>
         <Form inline className="FieldSettings">
           <ControlLabel>Field size:</ControlLabel> <FormControl bsSize="small" type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
           <Button bsStyle="primary" className="ResetButton" onClick={this.reset}>Reset</Button>
         </Form>
-        <Score playerOneScore={this.state.playerOneScore} playerTwoScore={this.state.playerTwoScore} />
+        <Score playerOneScore={playerOneScore} playerTwoScore={playerTwoScore} />
         <Field rows={this.state.rows} onBorderClick={this.handleBorderClick} />
         {this.state.isGameOver &&
-          <p>Game over! {this.state.playerOneScore > this.state.playerTwoScore ? 'You won :)' : 'Computer won :('}</p>
+          <GameResult playerOneScore={playerOneScore} playerTwoScore={playerTwoScore}></GameResult>
         }
       </div>
     );
