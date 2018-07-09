@@ -1,5 +1,9 @@
 import React from 'react';
-import { Button, Form, ControlLabel, FormControl } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Glyphicon
+} from 'react-bootstrap';
 import Field from '../Field/Field';
 import Score from '../Score/Score';
 import GameResult from '../GameResult/GameResult';
@@ -11,10 +15,12 @@ class Game extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = this.constructCleanState(5);
+    this.state = this.constructCleanState(3);
 
     this.reset = this.reset.bind(this);
     this.fieldSizeChange = this.fieldSizeChange.bind(this);
+    this.enlargeField = this.enlargeField.bind(this);
+    this.shrinkField = this.shrinkField.bind(this);
     this.handleBorderClick = this.handleBorderClick.bind(this);
   }
 
@@ -29,8 +35,20 @@ class Game extends React.PureComponent {
     }
   }
 
-  fieldSizeChange(event) {
-    this.setState(this.constructCleanState(parseInt(event.target.value, 10)));
+  enlargeField() {
+    this.fieldSizeChange(1);
+  }
+
+  shrinkField() {
+    this.fieldSizeChange(-1);
+  }
+
+  fieldSizeChange(increment) {
+    const fieldSize = this.state.fieldSize + increment;
+    if (fieldSize < 2 || fieldSize > 10) {
+      return;
+    }
+    this.setState((prevState) => this.constructCleanState(prevState.fieldSize + increment));
   }
 
   reset() {
@@ -39,7 +57,7 @@ class Game extends React.PureComponent {
 
   handleBorderClick(row, column, border) {
     this.setState(prevState => {
-      const rows = prevState.rows.slice().map(r => r.slice().map(c => c.clone()));
+      const rows = [...prevState.rows];
       const neighbours = getCellNeighbours(row, column);
       const neighbour = neighbours[border];
       const currentCell = rows[row][column];
@@ -101,10 +119,14 @@ class Game extends React.PureComponent {
     const playerTwoScore = this.state.playerTwoScore;
     return (
       <div>
-        <Form inline className="FieldSettings">
-          <ControlLabel>Field size:</ControlLabel> <FormControl bsSize="small" type="number" value={this.state.fieldSize} onChange={this.fieldSizeChange} />
+        <div inline className="FieldSettings">
+          <span className="FieldSettings-Size">Field size:</span>
+          <ButtonGroup>
+            <Button onClick={this.enlargeField}><Glyphicon glyph="plus" /></Button>
+            <Button onClick={this.shrinkField}><Glyphicon glyph="minus" /></Button>
+          </ButtonGroup>
           <Button bsStyle="primary" className="ResetButton" onClick={this.reset}>Reset</Button>
-        </Form>
+        </div>
         <Score playerOneScore={playerOneScore} playerTwoScore={playerTwoScore} />
         <Field rows={this.state.rows} onBorderClick={this.handleBorderClick} />
         {this.state.isGameOver &&
