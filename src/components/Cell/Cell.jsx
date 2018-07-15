@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Cell.css';
-import Border from '../Border/Border';
+import './cell.css';
+import Border from '../border/border';
 
 const Cell = (props) => {
   const cellClassName = () => {

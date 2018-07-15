@@ -1,4 +1,4 @@
-import CellModel from './CellModel';
+import CellModel from './cell-model';
 
 function buildRows(halfSize) {
   const rows = [];

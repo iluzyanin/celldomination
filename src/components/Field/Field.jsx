@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Cell from '../Cell/Cell';
-import './Field.css';
+import Cell from '../cell/cell';
+import './field.css';
 
 const Field = (props) => {
   const onCellClick = (row, column) => {

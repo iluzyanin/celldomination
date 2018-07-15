@@ -4,12 +4,12 @@ import {
   ButtonGroup,
   Glyphicon
 } from 'react-bootstrap';
-import Field from '../Field/Field';
-import Score from '../Score/Score';
-import GameResult from '../GameResult/GameResult';
-import { buildRows, getCellNeighbours } from '../../models/FieldModel';
+import Field from '../field/field';
+import Score from '../score/score';
+import GameResult from '../game-result/game-result';
+import { buildRows, getCellNeighbours } from '../../models/field-model';
 import computeMove from '../../services/computer';
-import './Game.css';
+import './game.css';
 
 class Game extends React.PureComponent {
   constructor(props) {

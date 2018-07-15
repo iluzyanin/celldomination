@@ -1,4 +1,4 @@
-import CellModel from './CellModel';
+import CellModel from './cell-model';
 
 describe('CellModel', () => {
   describe('When cell is not active', () => {

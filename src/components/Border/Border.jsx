@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Border.css';
+import './border.css';
 
 const Border = (props) => {
   const borderClassName = props.className + (props.isActive ? ' active' : '');

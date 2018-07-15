@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './GameResult.css';
+import './game-result.css';
 
 const GameResult = (props) => (
   <div className="GameResult">

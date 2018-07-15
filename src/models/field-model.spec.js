@@ -1,5 +1,5 @@
-import { buildRows, getCellNeighbours } from './FieldModel';
-import CellModel from './CellModel';
+import { buildRows, getCellNeighbours } from './field-model';
+import CellModel from './cell-model';
 
 describe('FieldModel', () => {
   describe('When calling buildRows method with 0', () => {
