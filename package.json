@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "npm run build-css && react-scripts start",
+    "now-start": "serve --single ./build",
     "dev": "npm run watch-css & react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run build-css && react-scripts build",
     "build-css": "node-less-chokidar src/ src/",
     "watch-css": "node-less-chokidar src/ src/ --watch",
     "test": "react-scripts test --env=jsdom",
@@ -21,6 +22,7 @@
     "react": "^15.6.2",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^15.6.2",
-    "react-scripts": "^1.1.4"
+    "react-scripts": "^1.1.4",
+    "serve": "^9.2.0"
   }
 }
