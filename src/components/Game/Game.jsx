@@ -18,7 +18,6 @@ class Game extends React.PureComponent {
     this.state = this.constructCleanState(3);
 
     this.reset = this.reset.bind(this);
-    this.fieldSizeChange = this.fieldSizeChange.bind(this);
     this.enlargeField = this.enlargeField.bind(this);
     this.shrinkField = this.shrinkField.bind(this);
     this.handleBorderClick = this.handleBorderClick.bind(this);
@@ -70,7 +69,7 @@ class Game extends React.PureComponent {
       }
       nextCell = rows[neighbour.nextRow][neighbour.nextColumn];
       currentCell[neighbour.borderName] = 2;
-      const nextCellBorderName = neighbours[border > 1 ? border - 2 : border + 2].borderName;
+      const nextCellBorderName = neighbours[(border + 2) % 4].borderName;
       nextCell[nextCellBorderName] = 2;
       if (currentCell.isActive) {
         currentCell.player = prevState.player;
@@ -119,7 +118,7 @@ class Game extends React.PureComponent {
     const playerTwoScore = this.state.playerTwoScore;
     return (
       <div>
-        <div inline className="FieldSettings">
+        <div className="FieldSettings">
           <span className="FieldSettings-Size">Field size:</span>
           <ButtonGroup>
             <Button onClick={this.enlargeField}><Glyphicon glyph="plus" /></Button>
